@@ -1,0 +1,35 @@
+<div class="modal-header" *ngIf="!embed">
+    <h5 class="modal-title" ngbAutofocus>{{title}}</h5>
+    <button type="button" class="btn-close shadow-none"
+        title="close" (click)="cerrarMapa()">
+    </button>
+</div>
+<div class="modal-body p-0 mb-0">
+    <div id="map" class="container" style="height: 400px;"></div>
+    <div class="alert alert-info alert-top-border alert-dismissible alert-additional fade show mb-0">
+      <div class="alert-body">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="d-flex" *ngIf="address || latitud || longitud">
+            <div class="flex-shrink-0 me-3"><i class="ri-map-pin-fill text-info fs-16 align-middle"></i></div>
+            <div class="flex-grow-1">
+                <strong class="text-info">Dirección </strong> {{address}} <br>
+                <strong class="text-info">Latitud: </strong> {{latitud}} <br>
+                <strong class="text-info">Longitud: </strong> {{longitud}}
+            </div>
+        </div>
+      </div>
+      <!-- <div class="alert-content"></div> -->
+  </div>
+</div>
+<div class="modal-footer p-0 mt-1" *ngIf="form">
+    <button type="button" class="btn btn-outline-primary rounded-3"
+        (click)="guardarUbicacion()">
+        <i class="ri-save-fill text-info fs-16 align-middle"></i>
+        Asignar Ubicación
+    </button>
+    <button *ngIf="!embed" 
+        type="button" class="btn btn-outline-secondary mr-3 rounded-3"
+        (click)="cerrarMapa()">
+        Cancelar
+    </button>
+</div>

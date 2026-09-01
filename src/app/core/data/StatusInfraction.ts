@@ -1,0 +1,8 @@
+export enum StatusInfraccion {
+  GENERADA = 'GENERADA',
+  NOTIFICADA = 'NOTIFICADA',
+  VENCIDA = 'VENCIDA',
+  PAGADA = 'PAGADA',
+  CANCELADA = 'CANCELADA'
+
+}

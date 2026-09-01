@@ -1,0 +1,280 @@
+<div class="responsive-table">
+    <div class="table-responsive table-card mb-2 table-nowrap"  *ngIf="viewMode === 'table'">
+    <!-- Desktop view -->
+        <table class="table                                                                                                                                                                                                        ">
+            <thead class="table-light">
+                <tr>
+                    @if (multiCheck) {
+                        <th scope="col" style="width: 50px;">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="checkAll" value="checkAll"
+                                [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">  
+                            </div>
+                        </th>
+                    }
+                    @for (column of itemsList; track $index) {
+                      @if (column.visible) {
+                        <th class="" (click)="onSort(column.prop)" 
+                            [attr.aria-sort]="getSortDirection(column.prop)"
+                            [class.sorted-asc]="currentSortColumn === column.prop && isSortAscending"
+                            [class.sorted-desc]="currentSortColumn === column.prop && !isSortAscending"
+                            [attr.data-title]="column.name">
+                            {{column.name}}
+                            <span class="sort-indicator" aria-hidden="true">
+                                <i class="ri-arrow-up-line" *ngIf="currentSortColumn === column.prop && isSortAscending"></i>
+                                <i class="ri-arrow-down-line" *ngIf="currentSortColumn === column.prop && !isSortAscending"></i>
+                            </span>
+                        </th>
+                      }
+                    }
+                    @if (actions) {
+                        <th >Acciones</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (data of content; track $index) {
+                <tr [id]="data.uuid || $index">
+                    @if (multiCheck) {
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                [checked]="checkedValGet.includes(data)" 
+                                (change)="onCheckboxChange($event, data)">
+                            </div>
+                        </td>
+                    }
+                    @for (column of itemsList; track column.prop) {   
+                      @if (column.visible) {
+                        <!-- <td [ngClass]="{'status': column.tag, 'date': column.date, 'name': !column.tag && !column.date}">{{ data[column.prop] }}</td> -->
+                      <td>
+                        <ng-container *ngIf="getPropertyValue(data, column.prop) as value; else emptyValue">
+                            @if (column.tag) {
+                                @if (column.category && column.category.length>0) {
+                                    <span class="badge text-white" 
+                                        [style.backgroundColor]="getCategoryColor(value, column.category)">
+                                        <!-- [style.color]="getContrastColor(getCategoryColor(value, column.category))"> -->
+                                        {{ value }}
+                                    </span>
+                                }@else{
+                                    <span class="badge" 
+                                        [ngClass]="['bg-'+getBadgeStatus(value)+'-subtle',
+                                                    'text-'+getBadgeStatus(value)]">
+                                        {{ value }}
+                                    </span>
+                                }
+                            } @else if (column.date) {
+                                <ngb-highlight [result]="(value | date:'longDate') || value" [term]="searchTerm"></ngb-highlight>
+                            } @else if(column.html){  
+                                <span [innerHTML]="value"></span>
+                            } @else if (column.image) {
+                                <img [src]="value" class="avatar-sm image_src" [alt]="''">
+                            } @else if (column.color) {
+                                <div class="color-swatch" [style.background-color]="value" [title]="value"></div>
+                            } @else {
+                                @if (column.avatar && data.avatar) {
+                                    <img [src]="'assets/icons/users/'+data.avatar" alt="" class="avatar-xs rounded-circle">
+                                }
+                                <a (click)="showItem(data)">
+                                    @if (value.length > 50) {
+                                    <span>
+                                    <span *ngIf="!isExpanded(data, column.prop)">{{ truncateText(value) }}</span>
+                                    <span *ngIf="isExpanded(data, column.prop)">{{ value }}</span>
+                                    <a href="javascript:void(0);" 
+                                        class="text-primary ms-1" 
+                                        (click)="toggleExpand(data, column.prop)">
+                                        {{ isExpanded(data, column.prop) ? 'Ver menos' : '...' }}
+                                    </a>
+                                    </span>
+                                    } @else {
+                                        {{ value }}
+                                    }
+                                </a>
+                            }
+                        </ng-container>
+                        <ng-template #emptyValue>
+                            @if (column.image) {                                    
+                                <i class="ri-car-fill vehicle-icon"></i>
+                            }@else if(column.prop===''){
+                                <span *ngIf="data.esMovil" class="badge bg-success-subtle text-success">
+                                    {{'Movil'}}
+                                </span>
+                                <span *ngIf="data.esOficial" class="badge bg-primary-subtle text-primary">
+                                    {{'Oficial'}}
+                                </span>
+                                <span *ngIf="data.esUnidadIndustrial" class="badge bg-warning-subtle text-warning">
+                                    {{'Industrial'}}
+                                </span>
+                            }@else{
+                                <span class="text-muted">...</span>
+                            }
+                        </ng-template>
+                      </td>
+                      }
+                    }
+                    @if (actions) {
+                        <!-- <td class="text-center d-flex flex-column align-items-center"> -->
+                    <td>
+                        <ul class="list-inline d-flex hstack gap-2 mb-0">
+                            @for (action of showActions(data); track $index) {
+                            <li class="me-2" [ngbTooltip]="action.tooltip" placement="top">
+                                <a [class]="action.buttonClass" (click)="action.handler(data)">
+                                <i [class]="action.icon + ' align-bottom'"></i>
+                                </a>
+                            </li>
+                            }
+                        </ul>
+                    </td>
+                    }
+                </tr>
+                }           
+            </tbody>            
+        </table> 
+    </div>
+</div>
+
+    <!-- Movil View -->
+<div class="responsive-cards"*ngIf="viewMode === 'cards'">
+        <div class="row g-3" *ngIf="!loading && allcontent.length > 0">
+            @for (data of content; track $index) {
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3" [id]="data.uuid || $index">
+                <div class="card h-100 mb-0">
+                    <div class="card-body mb-0">
+                        @if (multiCheck) {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                [checked]="checkedValGet.includes(data)" 
+                                (change)="onCheckboxChange($event, data)">
+                            </div>
+                        }
+                        <div class="d-flex flex-column gap-2">
+                            @for (column of itemsList; track column.prop) {   
+                            @if (column.visible) {
+                                <div class="card-field">
+                                    <small class="text-muted">{{column.name}}</small>
+                                    <div class="field-value">
+                                        <ng-container *ngIf="getPropertyValue(data, column.prop) as value; else emptyValue">
+                                            @if (column.tag) {
+                                                @if (column.category && column.category.length>0) {
+                                                <span class="badge text-white" 
+                                                    [style.backgroundColor]="getCategoryColor(value, column.category)">
+                                                    {{ value }}
+                                                </span>
+                                                }@else{
+                                                <span class="badge" 
+                                                    [ngClass]="['bg-'+getBadgeStatus(value)+'-subtle',
+                                                                'text-'+getBadgeStatus(value)]">
+                                                    {{ value }}
+                                                </span>
+                                                }
+                                            } @else if (column.date) {
+                                                <ngb-highlight [result]="(value | date:'longDate') || value" [term]="searchTerm"></ngb-highlight>
+                                            } @else if(column.html){  
+                                                <span [innerHTML]="value"></span>
+                                            } @else if (column.image) {
+                                                <img [src]="value" class="avatar-sm image_src" [alt]="''">
+                                            } @else {
+                                                @if (column.avatar && data.avatar) {
+                                                    <img [src]="'assets/icons/users/'+data.avatar" alt="" class="avatar-xs rounded-circle me-2">
+                                                }
+                                                <a (click)="showItem(data)">{{value}}</a>
+                                            }
+                                        </ng-container>
+                                        <ng-template #emptyValue>
+                                            @if (column.image) {                                    
+                                                <i class="ri-car-fill vehicle-icon"></i>
+                                            }@else if(column.prop===''){
+                                                <div class="d-flex gap-1">
+                                                    <span *ngIf="data.esMovil" class="badge bg-success-subtle text-success">
+                                                        {{'Movil'}}
+                                                    </span>
+                                                    <span *ngIf="data.esOficial" class="badge bg-primary-subtle text-primary">
+                                                        {{'Oficial'}}
+                                                    </span>
+                                                    <span *ngIf="data.esUnidadIndustrial" class="badge bg-warning-subtle text-warning">
+                                                        {{'Industrial'}}
+                                                    </span>
+                                                </div>
+                                            }@else{
+                                                <span class="text-muted">...</span>
+                                            }
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            }
+                            }
+                        </div>
+                    </div>
+                    <div class="card-footer p-2">
+                        @if (actions) {                        
+                        <div class="d-flex justify-content-end gap-2">            
+                                <ul class="list-inline d-flex hstack gap-2 mb-0">
+                                    @for (action of showActions(data); track $index) {
+                                    <li class="me-2" [ngbTooltip]="action.tooltip" placement="top">
+                                        <a [class]="action.buttonClass" (click)="action.handler(data)">
+                                        <i [class]="action.icon + ' align-bottom'"></i>
+                                        </a>
+                                    </li>
+                                    }
+                                </ul>
+                        </div>
+                        }</div>
+                </div>
+            </div>
+            }           
+        </div>   
+</div>
+    
+    
+    <!-- Loading Spinner -->
+    <div id="elmLoader" *ngIf="loading">
+    <div class="spinner-border text-primary avatar-sm" role="status">
+        <span class="visually-hidden">Cargando...</span>
+    </div>
+    </div>  
+    <!-- No Results Found -->
+    <div class="noresult" *ngIf="!loading && allcontent.length === 0">
+    <div class="text-center">
+        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" 
+        colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px">
+        </lord-icon>
+        <h5 class="mt-2">Lo Sentimos! No Se encontró ningún Dato </h5>
+        <p class="text-muted">No encontramos datos para mostrar</p>
+    </div>
+    </div>
+    <!-- Pagination -->
+    <div class="row align-items-md-center mt-3">
+        <div class="col col-xxl-1" *ngIf="allcontent && allcontent.length>0">                        
+            <div class="text-sm-left float-start listjs-pagination">     
+                    <div class="d-flex">
+                        <select class="form-control mb-0" (change)="onTableSizeChange($event)">
+                            <option *ngFor="let size of tableSizes" [value]="size">                
+                                {{size}}
+                            </option>                
+                        </select>             
+                    </div>      
+            </div>
+        </div>
+        <div class="col col-xxl-5 d-none d-sm-table" *ngIf="allcontent && allcontent.length>0">
+            <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                <span style="color:slategray">
+                    {{content.length}} Registros, de un total de {{ allcontent.length }}
+                </span>
+            </div>            
+        </div> 
+        <div class="col col-xxl-6">
+            <div class="text-sm-right float-sm-end listjs-pagination">
+                <ngb-pagination 
+                    [collectionSize]="allcontent.length" 
+                    [(page)]="service.page" 
+                    [pageSize]="itemsPerPage" 
+                    [boundaryLinks]="true" 
+                    [maxSize]="2" 
+                    [ellipses]="true"
+                    (pageChange)="changePage()">
+                </ngb-pagination>
+            </div>
+        </div>
+        
+    </div> 
+    <!-- End Pagination -->     

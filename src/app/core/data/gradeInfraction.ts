@@ -1,0 +1,5 @@
+export enum GradoInfraccion {
+  PRIMER_GRADO = 'PRIMER_GRADO',
+  SEGUNDO_GRADO = 'SEGUNDO_GRADO',
+  TERCER_GRADO = 'TERCER_GRADO'
+}

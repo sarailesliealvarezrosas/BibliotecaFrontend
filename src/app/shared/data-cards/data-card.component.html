@@ -1,0 +1,104 @@
+<div class="cards-container">
+    <div class="responsive-cards" *ngIf="!loading && allcontent.length > 0">
+        <div class="swiper responsive-swiper rounded gallery-light pb-4" dir="ltr">
+            <ngx-slick-carousel class="carousel space" [config]="Responsive " #slickModal>
+                @for (data of allcontent; track $index) {
+                <div class="swiper-slide" ngxSlickItem>
+                    <div class="card h-100 mb-0">
+                        <div class="card-body mb-0">
+                            @if (multiCheck) {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                    [checked]="checkedValGet.includes(data)" 
+                                    (change)="onCheckboxChange($event, data)">
+                                </div>
+                            }
+                            <div class="d-flex flex-column gap-2">
+                                @for (column of itemsList; track column.prop) {   
+                                @if (column.visible) {
+                                    <div class="card-field">
+                                        <small class="text-muted">{{column.name}}</small>
+                                        <div class="field-value">
+                                            <ng-container *ngIf="getPropertyValue(data, column.prop) as value; else emptyValue">
+                                                @if (column.tag) {
+                                                    <span class="badge" [ngClass]="['bg-'+getBadgeStatus(value)+'-subtle','text-'+getBadgeStatus(value)]">
+                                                        {{ value }}
+                                                    </span>
+                                                } @else if (column.date) {
+                                                    <ngb-highlight [result]="(value | date:'longDate') || value" [term]="searchTerm"></ngb-highlight>
+                                                } @else if(column.html){  
+                                                    <span [innerHTML]="value"></span>
+                                                } @else if (column.image) {
+                                                    <img [src]="value" class="avatar-sm image_src" [alt]="''">
+                                                } @else {
+                                                    @if (column.avatar && data.avatar) {
+                                                        <img [src]="'assets/icons/users/'+data.avatar" alt="" class="avatar-xs rounded-circle me-2">
+                                                    }
+                                                    <a (click)="showItem(data)">{{value}}</a>
+                                                }
+                                            </ng-container>
+                                            <ng-template #emptyValue>
+                                                @if (column.image) {                                    
+                                                    <i class="ri-car-fill vehicle-icon"></i>
+                                                }@else if(column.prop===''){
+                                                    <div class="d-flex gap-1">
+                                                        <span *ngIf="data.esMovil" class="badge bg-success-subtle text-success">
+                                                            {{'Movil'}}
+                                                        </span>
+                                                        <span *ngIf="data.esOficial" class="badge bg-primary-subtle text-primary">
+                                                            {{'Oficial'}}
+                                                        </span>
+                                                        <span *ngIf="data.esUnidadIndustrial" class="badge bg-warning-subtle text-warning">
+                                                            {{'Industrial'}}
+                                                        </span>
+                                                    </div>
+                                                }@else{
+                                                    <span class="text-muted">...</span>
+                                                }
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                }
+                                }
+                            </div>
+                        </div>
+                        <div class="card-footer p-2">
+                            @if (actions) {                        
+                            <div class="d-flex justify-content-end gap-2">            
+                                    <ul class="list-inline d-flex hstack gap-2 mb-0">
+                                        @for (action of showActions(data); track $index) {
+                                        <li class="me-2" [ngbTooltip]="action.tooltip" placement="top">
+                                            <a [class]="action.buttonClass" (click)="action.handler(data)">
+                                            <i [class]="action.icon + ' align-bottom'"></i>
+                                            </a>
+                                        </li>
+                                        }
+                                    </ul>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                }
+            </ngx-slick-carousel>
+        </div>
+    </div>  
+</div>
+  
+    <!-- Loading Spinner -->
+    <div id="elmLoader" *ngIf="loading">
+    <div class="spinner-border text-primary avatar-sm" role="status">
+        <span class="visually-hidden">Cargando...</span>
+    </div>
+    </div>  
+    <!-- No Results Found -->
+    <div class="noresult" *ngIf="!loading && allcontent.length === 0">
+    <div class="text-center">
+        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" 
+        colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px">
+        </lord-icon>
+        <h5 class="mt-2">Lo Sentimos! No Se encontró ningún Dato </h5>
+        <p class="text-muted">No encontramos datos para mostrar</p>
+    </div>
+    </div>
+      

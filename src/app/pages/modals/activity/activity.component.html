@@ -1,0 +1,233 @@
+<div class="modal-content" *ngIf="accion !=='delete'">
+    <div class="modal-header border p-2">
+      <div class="mini-stats-wid d-flex w-100 justify-content-between">
+        <div class="d-flex align-items-center">
+          <div class="flex-shrink-0 avatar-sm">
+            <span class="mini-stat-icon avatar-title rounded-circle text-success bg-success-subtle fs-4">
+              <img src="assets/icons/logos/logo-sm.png" class="card-logo card-logo-dark user-profile-image img-fluid">
+            
+            </span>
+          </div>
+          <h5 class="modal-title ms-2" *ngIf="accion === ''" ngbAutofocus>Agregar {{title}}</h5>
+          <h5 class="modal-title ms-2" *ngIf="accion === 'edit'" ngbAutofocus>Editar {{title}}</h5>
+          <h5 class="modal-title ms-2" *ngIf="accion === 'show'">{{title}}: {{ row.tipoActividad }}</h5>
+        </div>
+        <button type="button" class="btn-close ms-2" id="btn-close" 
+          data-bs-dismiss="modal" aria-label="Cerrar" (click)="closeModal()">
+        </button>
+      </div>
+    </div>
+
+  <div class="modal-body" *ngIf="accion ==='show'">
+    <div class="card mb-3">
+        <div class="card-body">
+            <!-- Información de la Actividad -->
+            <div class="row mb-2">
+                <h6 class="fw-semibold mb-3 text-primary">
+                    <i class="ri-calendar-event-line me-2"></i>Información de la Actividad
+                </h6>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0 me-3">
+                                <i class="ri-todo-line text-muted fs-5"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="fw-semibold mb-0">Tipo de Actividad</h6>
+                                <p class="text-muted mb-0">{{row.tipoActividad || 'No especificado'}}</p>
+                            </div>
+                        </div>
+                    </div>
+                       <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 me-3">
+                                    <i class="ri-toggle-line text-muted fs-5"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-semibold mb-0">Estado</h6>
+                                    <p class="mb-0">
+                                        <span [ngClass]="{ 'text-success': row.activo, 'text-warning': !row.activo }">
+                                            {{ row.activo ? 'ACTIVO' : 'INACTIVO' }}
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0 me-3">
+                                <i class="ri-calendar-event-line text-muted fs-5"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="fw-semibold mb-0">Fecha Inicio</h6>
+                                <p class="text-muted mb-0">{{row.fechaInicio ? (row.fechaInicio | date: 'dd MMMM, yyyy') : 'No especificado'}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0 me-3">
+                                <i class="ri-calendar-close-line text-muted fs-5"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="fw-semibold mb-0">Fecha Fin</h6>
+                                <p class="text-muted mb-0">{{row.fechaFin ? (row.fechaFin | date: 'dd MMMM, yyyy') : 'No especificado'}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <form (ngSubmit)="saveData()" *ngIf="accion==='edit' || accion===''"
+      class="tablelist-form" autocomplete="off" [formGroup]="contentForm">
+      <div class="modal-body">
+        <div class="row g-2">
+          <input type="hidden" formControlName="uuid" />
+         
+          <div class="col-md-12">
+          <label for="activity-field" class="form-label mb-0">
+              Tipo de Actividad: <span class="text-danger">*</span>
+          </label>
+          <input type="text" id="activity-field" class="form-control" 
+              placeholder="Ingrese tipo de actividad (máximo 100 caracteres)"
+              required formControlName="tipoActividad"
+              maxlength="100"
+              (input)="convertToUppercase($event)"
+              [ngClass]="{ 'is-invalid': submitted && form['tipoActividad'].errors }" />
+          
+          <div class="invalid-feedback" *ngIf="form['tipoActividad'].errors?.['required']">
+              Este campo es requerido.
+          </div>
+          <div class="invalid-feedback" *ngIf="form['tipoActividad'].errors?.['maxlength']">
+              El tipo de actividad no puede tener más de 100 caracteres.
+          </div>
+    
+    <div class="form-text text-end" 
+         [ngClass]="{
+             'text-danger': (form['tipoActividad'].value?.length || 0) > 90
+         }">
+        {{ form['tipoActividad'].value?.length || 0 }}/100 caracteres
+    </div>
+</div>
+
+
+
+
+<div class="col-lg-6 mb-3">
+  <label class="form-label mb-0">Fecha Inicio: <span class="text-danger">*</span></label>
+  <div class="input-group">
+    <input type="text" 
+      class="form-control" 
+      mwlFlatpickr 
+      [dateFormat]="'d-m-Y'"
+      [altFormat]="'d/m/Y'"
+      [locale]="Spanish"
+      [convertModelValue]="true"
+      formControlName="fechaInicio"
+      placeholder="Seleccione fecha inicio"
+      [ngClass]="{ 'is-invalid': submitted && form['fechaInicio'].errors }"/>
+    <div class="input-group-text bg-primary border-primary text-white">
+      <i class="ri-calendar-2-line"></i>
+    </div>
+  </div>
+
+  <div class="invalid-feedback" 
+       [class.d-block]="submitted && form['fechaInicio'].errors">
+    Este campo es requerido.
+  </div>
+</div>
+
+<div class="col-lg-6 mb-3">
+  <label class="form-label mb-0">Fecha Fin: <span class="text-danger">*</span></label>
+  <div class="input-group">
+    <input type="text" 
+      class="form-control" 
+      mwlFlatpickr 
+      [dateFormat]="'d-m-Y'"
+      [altFormat]="'d/m/Y'"
+      [locale]="Spanish"
+      [convertModelValue]="true"
+      formControlName="fechaFin"
+      placeholder="Seleccione fecha fin"
+      [ngClass]="{ 'is-invalid': submitted && (form['fechaFin'].errors?.['dateRangeInvalid'] || form['fechaFin'].errors?.['required']) }"/>
+    <div class="input-group-text bg-primary border-primary text-white">
+      <i class="ri-calendar-2-line"></i>
+    </div>
+  </div>
+
+  <div class="invalid-feedback" 
+       [class.d-block]="submitted && form['fechaFin'].errors?.['required']">
+    Este campo es requerido. 
+  </div>
+  <div class="invalid-feedback" 
+       [class.d-block]="submitted && form['fechaFin'].errors?.['dateRangeInvalid']">
+    La fecha fin no puede ser menor que la fecha inicio
+  </div>
+</div>
+
+
+
+
+<div class="col-md-12">
+  <div class="form-check form-switch form-switch-lg">
+    <input type="checkbox" class="form-check-input" 
+           id="activo" 
+           formControlName="activo"
+           (change)="updateStatusText()">
+    <label class="form-check-label ms-2" for="activo">
+      {{ statusText }}
+    </label>
+  </div>
+</div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+            (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-success" id="add-btn">
+            <!-- {{ accion === '' ? 'Guardar' : 'Actualizar' }} -->
+              {{ accion === 'edit' ? 'Actualizar' : 'Guardar' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  
+  <ng-container *ngIf="accion === 'delete'">
+    <div class="modal-body" >
+        <div class="mt-2 text-center">
+            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json"
+                colors="primary:#405189,secondary:#f06548" 
+                trigger="loop" style="width:90px;height:90px">
+            </lord-icon>
+            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                <h4>Estas seguro de Eliminar la {{title}}?</h4>
+            </div>    
+            <p class="text-muted fs-15 mx-4 mx-sm-5">
+                Al Confirmar no poda acceder a los datos de {{title}} nuevamente.
+            </p>                            
+            <div class="d-flex gap-2 justify-content-center mt-2 mb-2">
+                <button class="btn btn-link link-success fw-medium text-decoration-none" 
+                    id="deleteRecord-close" data-bs-dismiss="modal" 
+                    (click)="closeModal()">
+                    <i class="ri-close-line me-1 align-middle"></i> Cancelar
+                </button>
+
+                <button type="button" class="btn w-sm btn-danger" id="delete-product" 
+                    (click)="deleteMethod()">Si, Eliminar!
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-container>
