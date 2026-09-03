@@ -7,7 +7,7 @@ import { map, tap } from 'rxjs/operators';
 import { TokenStorageService } from './token-storage.service';
 import { environment } from 'src/environments/environment';
 
-const API_URL = `${environment.apiLoginUrl}`;
+const API_URL = `${environment.backendUrl}`;
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
