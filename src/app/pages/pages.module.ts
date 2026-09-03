@@ -17,18 +17,10 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 // Pages Routing
 import { SharedModule } from "../shared/shared.module";
-import { ProfileComponent } from './account/profile/profile.component';
-import { SettingsComponent } from './account/settings/settings.component';
-
 import { ActivitiesComponent } from './modules/activities/activities.component';
 
 @NgModule({
   declarations: [
-    ProfileComponent,
-    SettingsComponent,
-  //  PassResetComponent,
-
-
     ActivitiesComponent,
 
  ],

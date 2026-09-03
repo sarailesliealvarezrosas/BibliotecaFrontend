@@ -68,10 +68,6 @@
                                 }
                             }
                         </ngx-simplebar>
-
-                        <div class="text-center pt-3 pb-1">
-                            <a href="/pages/faqs" class="btn btn-primary btn-sm">Preguntas Frecuentes <i class="ri-arrow-right-line ms-1"></i></a>
-                        </div>
                     </div>
                 </form>
             </div>
@@ -115,19 +111,10 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
                         <h6 class="dropdown-header">Bienvenido!</h6>
-                        <a class="dropdown-item" routerLink="/auth/profile">
-                            <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> 
-                            <span class="align-middle">Perfil</span>
-                        </a>
-                        <a class="dropdown-item" routerLink="/pages/faqs">
-                            <i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> 
-                            <span class="align-middle">Ayuda</span>
-                        </a>
+
+                     
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" routerLink="/auth/profile-setting">
-                            <i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> 
-                            <span class="align-middle">Configuraciones</span>
-                        </a>
+
                         <div class="dropdown-divider"></div>
                         <!-- ====== BOTÓN DE CERRAR SESIÓN AGREGADO ====== -->
                         <a class="dropdown-item text-danger" (click)="logout()" style="cursor: pointer;">
