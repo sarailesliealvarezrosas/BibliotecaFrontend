@@ -1,7 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Inject, ViewChild, TemplateRef } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
-//import { TokenStorageService } from '../../core/services/token-storage.service';
 import { EventService } from '../../core/services/event.service';
 
 // Language
@@ -9,7 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { LanguageService } from '../../core/services/language.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-//import { AuthenticationService } from 'src/app/core/services/auth.service';
+import { AuthenticationService } from '../../core/services/auth.service';  // ← Importar el servicio
 import { MENU } from '../sidebar/menu';
 
 @Component({
@@ -18,21 +17,19 @@ import { MENU } from '../sidebar/menu';
   styleUrls: ['./topbar.component.scss']
 })
 export class TopbarComponent implements OnInit {
-  menuItems:any[]=[];
-  avatar="default-profile1.png";
-  messages: any
+  menuItems: any[] = [];
+  avatar = "default-profile1.png";
+  messages: any;
   element: any;
   mode: string | undefined;
   @Output() mobileMenuButtonClicked = new EventEmitter();
-  allnotifications: any
+  allnotifications: any;
   flagvalue: any;
   valueset: any;
   countryName: any;
   cookieValue: any;
-  //userData: any;
   
   total = 0;
-  
   totalNotify: number = 0;
   newNotify: number = 0;
   readNotify: number = 0;
@@ -40,25 +37,22 @@ export class TopbarComponent implements OnInit {
   @ViewChild('removenotification') removenotification !: TemplateRef<any>;
   notifyId: any;
 
-  constructor(@Inject(DOCUMENT) private document: any,
-   private eventService: EventService, 
-   public languageService: LanguageService, 
-   private modalService: NgbModal,
-    public _cookiesService: CookieService, public translate: TranslateService, 
-    //private authService: AuthenticationService, 
-    private router: Router, 
-    //private TokenStorageService: TokenStorageService
-    
+  constructor(
+    @Inject(DOCUMENT) private document: any,
+    private eventService: EventService,
+    public languageService: LanguageService,
+    private modalService: NgbModal,
+    public _cookiesService: CookieService,
+    public translate: TranslateService,
+    private authService: AuthenticationService,  // ← Inyectar el servicio de autenticación
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    //this.userData = this.authService.currentUser();
     this.element = document.documentElement;
     this.avatar = "default-profile1.png";
-   // this.avatar=this.authService.getAvatar();
+    this.menuItems = MENU;
 
-    this.menuItems = MENU;  
-  
     // Cookies wise Language set
     this.cookieValue = this._cookiesService.get('lang');
     const val = this.listLang.filter(x => x.lang === this.cookieValue);
@@ -68,69 +62,29 @@ export class TopbarComponent implements OnInit {
     } else {
       this.flagvalue = val.map(element => element.flag);
     }
-    
+  }
+
+  // ====== MÉTODO DE CERRAR SESIÓN ======
+  logout(): void {
+    this.authService.logout();
   }
 
   /**
    * Toggle the menu bar when having mobile screen
    */
   toggleMobileMenu(event: any) {
-    document.querySelector('.hamburger-icon')?.classList.toggle('open')
+    document.querySelector('.hamburger-icon')?.classList.toggle('open');
     event.preventDefault();
     this.mobileMenuButtonClicked.emit();
   }
 
   /**
-   * Fullscreen method
+   * Topbar Light-Dark Mode Change (ELIMINADO - solo referencia visual)
+   * Ya no se usa en el HTML
    */
-  fullscreen() {
-    document.body.classList.toggle('fullscreen-enable');
-    if (
-      !document.fullscreenElement && !this.element.mozFullScreenElement &&
-      !this.element.webkitFullscreenElement) {
-      if (this.element.requestFullscreen) {
-        this.element.requestFullscreen();
-      } else if (this.element.mozRequestFullScreen) {
-        /* Firefox */
-        this.element.mozRequestFullScreen();
-      } else if (this.element.webkitRequestFullscreen) {
-        /* Chrome, Safari and Opera */
-        this.element.webkitRequestFullscreen();
-      } else if (this.element.msRequestFullscreen) {
-        /* IE/Edge */
-        this.element.msRequestFullscreen();
-      }
-    } else {
-      if (this.document.exitFullscreen) {
-        this.document.exitFullscreen();
-      } else if (this.document.mozCancelFullScreen) {
-        /* Firefox */
-        this.document.mozCancelFullScreen();
-      } else if (this.document.webkitExitFullscreen) {
-        /* Chrome, Safari and Opera */
-        this.document.webkitExitFullscreen();
-      } else if (this.document.msExitFullscreen) {
-        /* IE/Edge */
-        this.document.msExitFullscreen();
-      }
-    }
-  }
-  /**
-* Open modal
-* @param content modal content
-*/
-  openModal(content: any) {
-    // this.submitted = false;
-    this.modalService.open(content, { centered: true });
-  }
-
-  /**
-  * Topbar Light-Dark Mode Change
-  */
   changeMode(mode: string) {
     this.mode = mode;
     this.eventService.broadcast('changeMode', mode);
-
     switch (mode) {
       case 'light':
         document.documentElement.setAttribute('data-bs-theme', "light");
@@ -150,7 +104,7 @@ export class TopbarComponent implements OnInit {
   listLang = [
     { text: 'English', flag: 'assets/icons/flags/us.svg', lang: 'en' },
     { text: 'Español', flag: 'assets/icons/flags/spain.svg', lang: 'es' },
-   ];
+  ];
 
   /***
    * Language Value Set
@@ -190,6 +144,7 @@ export class TopbarComponent implements OnInit {
       this.isDropdownOpen = true;
     }
   }
+
   // Search Topbar
   Search() {
     var searchOptions = document.getElementById("search-close-options") as HTMLAreaElement;

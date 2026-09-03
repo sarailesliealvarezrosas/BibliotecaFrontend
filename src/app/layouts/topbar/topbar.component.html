@@ -31,7 +31,7 @@
                     </span>
                 </button>
 
-                <!-- Menu Search-->
+                <!-- Menu Search -->
                 <form class="app-search d-none d-md-block">
                     <div class="position-relative">
                         <input type="text" class="form-control" placeholder="Buscar..." autocomplete="off" 
@@ -78,6 +78,7 @@
 
             <div class="d-flex align-items-center">
 
+                <!-- Buscador móvil -->
                 <div class="dropdown d-md-none topbar-head-dropdown header-item" ngbDropdown>
                     <button type="button" class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle" id="page-header-search-dropdown" 
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
@@ -95,56 +96,44 @@
                     </div>
                 </div>
 
- 
+                <!-- ====== ELIMINADOS: Fullscreen y Modo Día/Noche ====== -->
 
-                <div class="ms-1 header-item d-none d-sm-flex">
-                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" data-toggle="fullscreen" (click)="fullscreen()">
-                        <i class='bx bx-fullscreen fs-22'></i>
-                    </button>
-                </div>
-
-                <div class="ms-1 header-item d-none d-sm-flex">
-                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode">
-                        <i class='bx bx-moon fs-22' (click)="changeMode('dark')"></i>
-                        <i class='bx bx-sun fs-22' (click)="changeMode('light')"></i>
-                    </button>
-                </div>
-
+                <!-- Notificaciones (si las usas) -->
                 <app-notices></app-notices>
 
+                <!-- Dropdown de Usuario -->
                 <div class="dropdown ms-sm-3 header-item topbar-user" ngbDropdown>
                     <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
                         <span class="d-flex align-items-center">
                             <img class="rounded-circle header-profile-user" [src]="'assets/icons/users/'+avatar" alt="Header Avatar">
-                          
-
-                       
                             <span class="text-start ms-xl-2">
-                            <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
-                                Usuario
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
+                                    Usuario
+                                </span>
                             </span>
-                        </span>
-                       
-                       
                         </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
-                        <!-- item-->
-                         <h6 class="dropdown-header">Bienvenido!</h6>
-                     <!----   <h6 class="dropdown-header">Bienvenido {{userData.username ? userData.username : userData.userName}}!</h6>-->
+                        <h6 class="dropdown-header">Bienvenido!</h6>
                         <a class="dropdown-item" routerLink="/auth/profile">
                             <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> 
-                            <span class="align-middle">Perfil</span></a>
+                            <span class="align-middle">Perfil</span>
+                        </a>
                         <a class="dropdown-item" routerLink="/pages/faqs">
                             <i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> 
-                            <span class="align-middle">Ayuda</span></a>
+                            <span class="align-middle">Ayuda</span>
+                        </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" routerLink="/auth/profile-setting">
-                            <!-- <span class="badge bg-success-subtle text-success mt-1 float-end">New</span> -->
                             <i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> 
-                            <span class="align-middle">Configuraciones</span></a>
-                        <!-- <a class="dropdown-item" href="javascript: void(0);" (click)="logout()"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Salir</span></a>
-                     -->
+                            <span class="align-middle">Configuraciones</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <!-- ====== BOTÓN DE CERRAR SESIÓN AGREGADO ====== -->
+                        <a class="dropdown-item text-danger" (click)="logout()" style="cursor: pointer;">
+                            <i class="mdi mdi-logout text-danger fs-16 align-middle me-1"></i> 
+                            <span class="align-middle">Cerrar Sesión</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -154,7 +143,6 @@
 
 <!-- removeNotificationModal -->
 <ng-template #removenotification let-modal>
-    <!-- <div class="modal-dialog modal-dialog-centered"> -->
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="NotificationModalbtn-close" (click)="modal.dismiss('Cross click')"></button>
@@ -172,7 +160,5 @@
                 <button type="button" class="btn w-sm btn-danger" id="delete-notification" (click)="notificationDelete()">Yes, Delete It!</button>
             </div>
         </div>
-
-    </div><!-- /.modal-content -->
-
+    </div>
 </ng-template>
