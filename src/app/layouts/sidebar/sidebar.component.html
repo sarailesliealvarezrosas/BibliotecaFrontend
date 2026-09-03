@@ -35,31 +35,8 @@
     </button>
   </div>
   
-  <!-- ====== INFO DEL USUARIO ====== -->
-  <div class="navbar-brand-box">
-    <div class="dropdown sidebar-user">
-      <span class="d-flex align-items-center gap-2">
-        <img class="rounded-circle header-profile-user" [src]="'assets/icons/users/'+avatar" alt="Header Avatar">
-        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <span class="text-start">
-            <span class="d-none d-lg-block fs-14 sidebar-user-name-sub-text">
-              <i class="ri ri-checkbox-blank-circle-fill fs-10 text-primary align-self-center"></i> 
-              <span class="align-middle text-muted m-2">Online</span>
-            </span>
-          </span>
-        </button>
-      </span>
-      <!-- DROPDOWN DEL USUARIO (solo logout) -->
-      <div class="dropdown-menu dropdown-menu-end">
-        <a class="dropdown-item text-danger" (click)="logout()" style="cursor: pointer;">
-          <i class="ri-logout-box-line text-danger fs-16 align-middle me-1"></i>
-          <span class="align-middle">Cerrar Sesión</span>
-        </a>
-      </div>
-    </div>
-  </div>
 
-  <!-- ====== MENÚ PRINCIPAL ====== -->
+
   <div id="scrollbar">
     <div class="container-fluid">
       <div id="two-column-menu"></div>
@@ -163,13 +140,7 @@
         </ul>
       </ngx-simplebar>
 
-      <!-- ====== BOTÓN DE CERRAR SESIÓN (al final del menú) ====== -->
-      <div class="p-3 border-top mt-3">
-        <button class="btn btn-danger w-100" (click)="logout()">
-          <i class="ri-logout-box-line me-2"></i>
-          Cerrar Sesión
-        </button>
-      </div>
+  
     </div>
   </div>
   <div class="sidebar-background"></div>

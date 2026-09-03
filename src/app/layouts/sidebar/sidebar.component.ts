@@ -24,7 +24,7 @@ export class SidebarComponent implements OnInit {
   constructor(
     private router: Router,
     public translate: TranslateService,
-    private authService: AuthenticationService  // ← INYECTAR EL SERVICIO
+    private authService: AuthenticationService
   ) {
     translate.setDefaultLang('es');
   }
@@ -39,7 +39,7 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  // ====== MÉTODO PARA CERRAR SESIÓN ======
+  // ====== logout ======
   logout(): void {
     this.authService.logout();
   }

@@ -19,9 +19,8 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError(err => {
-        // Si el error es 401 (No autorizado) o 403 (Prohibido), cerrar sesión
+    
         if (err.status === 401 || err.status === 403) {
-          // Solo redirigir si no estamos en la página de login
           if (!this.router.url.includes('/auth/login')) {
             this.authService.logout();
           }

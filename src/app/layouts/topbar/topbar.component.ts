@@ -64,7 +64,7 @@ export class TopbarComponent implements OnInit {
     }
   }
 
-  // ====== MÉTODO DE CERRAR SESIÓN ======
+  // ====== logout ======
   logout(): void {
     this.authService.logout();
   }
