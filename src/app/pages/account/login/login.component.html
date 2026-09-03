@@ -1,0 +1,74 @@
+<div class="auth-page-wrapper pt-5">
+  <div class="auth-page-content">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 col-xl-5">
+          <div class="card mt-4">
+            <div class="card-body p-4">
+              <div class="text-center mt-2">
+                <h5 class="text-primary">Bienvenido!</h5>
+                <p class="text-muted">Inicia sesión para continuar.</p>
+              </div>
+              <div class="p-2 mt-4">
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                  <!-- Username -->
+                  <div class="mb-3">
+                    <label for="username" class="form-label">Usuario</label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="username" 
+                           formControlName="username"
+                           placeholder="Ingresa tu usuario"
+                           [ngClass]="{'is-invalid': submitted && loginForm.get('username')?.errors}">
+                    <div *ngIf="submitted && loginForm.get('username')?.errors" class="invalid-feedback">
+                      El usuario es requerido.
+                    </div>
+                  </div>
+
+                  <!-- Password -->
+                  <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <div class="position-relative auth-pass-inputgroup">
+                      <input [type]="passwordFieldType" 
+                             class="form-control" 
+                             id="password" 
+                             formControlName="password"
+                             placeholder="Ingresa tu contraseña"
+                             [ngClass]="{'is-invalid': submitted && loginForm.get('password')?.errors}">
+                      <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" 
+                              type="button" 
+                              (click)="togglePasswordVisibility()">
+                        <i class="ri-eye-fill align-middle" *ngIf="passwordFieldType === 'password'"></i>
+                        <i class="ri-eye-off-fill align-middle" *ngIf="passwordFieldType === 'text'"></i>
+                      </button>
+                    </div>
+                    <div *ngIf="submitted && loginForm.get('password')?.errors" class="invalid-feedback">
+                      La contraseña es requerida.
+                    </div>
+                  </div>
+
+                  <!-- Error Message -->
+                  <div *ngIf="loginError" class="alert alert-danger text-center" role="alert">
+                    {{ loginError }}
+                  </div>
+
+                  <!-- Submit Button -->
+                  <div class="mt-4">
+                    <button class="btn btn-primary w-100" type="submit" [disabled]="loading">
+                      <span *ngIf="!loading">Iniciar Sesión</span>
+                      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                      <span *ngIf="loading">Cargando...</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 text-center">
+            <p class="mb-0">&copy; {{ currentYear }} <a href="#" class="text-decoration-underline">{{ appName }}</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

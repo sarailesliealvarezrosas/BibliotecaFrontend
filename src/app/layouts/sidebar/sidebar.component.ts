@@ -4,6 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { GlobalComponent } from 'src/app/global-component';
 import { MenuItem } from './menu.model';
 import { MENU } from './menu';
+import { AuthenticationService } from '../../core/services/auth.service';
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -17,15 +19,17 @@ export class SidebarComponent implements OnInit {
   @ViewChild('sideMenu') sideMenu!: ElementRef;
   @Output() mobileMenuButtonClicked = new EventEmitter();
 
-  avatar="default-profile1.png";
+  avatar = "default-profile1.png";
+  
   constructor(
-    private router: Router, 
-    public translate: TranslateService
+    private router: Router,
+    public translate: TranslateService,
+    private authService: AuthenticationService  // ← INYECTAR EL SERVICIO
   ) {
     translate.setDefaultLang('es');
   }
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.router.events.subscribe((event) => {
       if (document.documentElement.getAttribute('data-layout') != "twocolumn") {
         if (event instanceof NavigationEnd) {
@@ -33,6 +37,11 @@ export class SidebarComponent implements OnInit {
         }
       }
     });
+  }
+
+  // ====== MÉTODO PARA CERRAR SESIÓN ======
+  logout(): void {
+    this.authService.logout();
   }
 
   getSubMenu(menuItems: any[]): any[] {
@@ -55,49 +64,47 @@ export class SidebarComponent implements OnInit {
   }
 
   toggleItem(item: any) {
-  this.menuItems.forEach((menuItem: any) => {
-    if (menuItem === item) {
-      menuItem.isCollapsed = !menuItem.isCollapsed
-    } else {
-      menuItem.isCollapsed = true
-    }
-    if (menuItem.permisoHijoListDto?.length > 0) {
-      menuItem.permisoHijoListDto.forEach((subItem: any) => {
-        if (subItem === item) {
-          menuItem.isCollapsed = !menuItem.isCollapsed
-          subItem.isCollapsed = !subItem.isCollapsed
-        } else {
-          subItem.isCollapsed = true
-        }
-        if (subItem.permisoHijoListDto?.length > 0) {
-          subItem.permisoHijoListDto.forEach((childitem: any) => {
-
-            if (childitem === item) {
-              childitem.isCollapsed = !childitem.isCollapsed
-              subItem.isCollapsed = !subItem.isCollapsed
-              menuItem.isCollapsed = !menuItem.isCollapsed
-            } else {
-              childitem.isCollapsed = true
-            }
-            if (childitem.permisoHijoListDto?.length > 0) {
-              childitem.permisoHijoListDto.forEach((childrenitem: any) => {
-
-                if (childrenitem == item) {
-                  childrenitem.isCollapsed = true
-                  childitem.isCollapsed = true
-                  subItem.isCollapsed = true
-                  menuItem.isCollapsed = true
-                } else {
-                  childrenitem.isCollapsed = false
-                }
-              })
-            }
-          })
-        }
-      })
-    }
-  });
-}
+    this.menuItems.forEach((menuItem: any) => {
+      if (menuItem === item) {
+        menuItem.isCollapsed = !menuItem.isCollapsed
+      } else {
+        menuItem.isCollapsed = true
+      }
+      if (menuItem.permisoHijoListDto?.length > 0) {
+        menuItem.permisoHijoListDto.forEach((subItem: any) => {
+          if (subItem === item) {
+            menuItem.isCollapsed = !menuItem.isCollapsed
+            subItem.isCollapsed = !subItem.isCollapsed
+          } else {
+            subItem.isCollapsed = true
+          }
+          if (subItem.permisoHijoListDto?.length > 0) {
+            subItem.permisoHijoListDto.forEach((childitem: any) => {
+              if (childitem === item) {
+                childitem.isCollapsed = !childitem.isCollapsed
+                subItem.isCollapsed = !subItem.isCollapsed
+                menuItem.isCollapsed = !menuItem.isCollapsed
+              } else {
+                childitem.isCollapsed = true
+              }
+              if (childitem.permisoHijoListDto?.length > 0) {
+                childitem.permisoHijoListDto.forEach((childrenitem: any) => {
+                  if (childrenitem == item) {
+                    childrenitem.isCollapsed = true
+                    childitem.isCollapsed = true
+                    subItem.isCollapsed = true
+                    menuItem.isCollapsed = true
+                  } else {
+                    childrenitem.isCollapsed = false
+                  }
+                })
+              }
+            })
+          }
+        })
+      }
+    });
+  }
 
   activateParentDropdown(item: any) {
     item.classList.add("active");
@@ -138,7 +145,7 @@ export class SidebarComponent implements OnInit {
       this.removeActivation(activeItems);
 
       let matchingMenuItem = items.find((x: any) => {
-          return x.pathname === pathName;
+        return x.pathname === pathName;
       });
       if (matchingMenuItem) {
         this.activateParentDropdown(matchingMenuItem);
@@ -175,7 +182,6 @@ export class SidebarComponent implements OnInit {
     var sidebarsize = document.documentElement.getAttribute("data-sidebar-size");
     if (sidebarsize == 'sm-hover-active') {
       document.documentElement.setAttribute("data-sidebar-size", 'sm-hover');
-
     } else {
       document.documentElement.setAttribute("data-sidebar-size", 'sm-hover-active')
     }

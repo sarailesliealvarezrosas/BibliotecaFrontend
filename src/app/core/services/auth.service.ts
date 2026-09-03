@@ -1,56 +1,109 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 import { TokenStorageService } from './token-storage.service';
-import { logout, logoutSuccess } from 'src/app/store/Authentication/authentication.actions';
-import { MenuItem } from 'src/app/layouts/sidebar/menu.model';
-import { UserRol } from '../data/UserData';
-import { GlobalComponent } from 'src/app/global-component';
+import { environment } from 'src/environments/environment';
+
+const API_URL = `${environment.apiLoginUrl}`;
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
 
-  constructor(private router: Router) {}
+  private currentUserSubject: BehaviorSubject<any>;
+  public currentUser: Observable<any>;
 
+  constructor(
+    private http: HttpClient,
+    private tokenStorage: TokenStorageService,
+    private router: Router
+  ) {
+    // Inicializar con el usuario almacenado en sessionStorage
+    const storedUser = this.tokenStorage.getUser();
+    this.currentUserSubject = new BehaviorSubject<any>(storedUser);
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
+
+  // Login: Envía credenciales al backend
+  login(username: string, password: string): Observable<any> {
+    return this.http.post<any>(`${API_URL}/auth/login`, { username, password })
+      .pipe(
+        tap(response => {
+          if (response && response.token) {
+            // Guardar token y usuario
+            this.tokenStorage.saveToken(response.token);
+            this.tokenStorage.saveUser(response);
+            this.currentUserSubject.next(response);
+          }
+        })
+      );
+  }
+
+  // Logout: Limpia sessionStorage y redirige al login
+  logout(): void {
+    this.tokenStorage.signOut();
+    this.currentUserSubject.next(null);
+    this.router.navigate(['/auth/login']);
+  }
+
+  // Verifica si el usuario está logueado
   public isLoggedIn(): boolean {
-    return true;
+    const user = this.currentUserValue;
+    return !!user && !!this.tokenStorage.getToken();
   }
 
-  isAdmin(): boolean {
-    return true;
+  // Obtiene el usuario actual (sincrónico)
+  public get currentUserValue(): any {
+    return this.currentUserSubject.value;
   }
 
-  hasPermission(modulo: string): string[] {
-    return [];
+  // Obtiene el token del usuario
+  public getToken(): string | null {
+    return this.tokenStorage.getToken();
   }
 
-  hasRoutePermission(route: string): boolean {
-    return true;
-  }
-
-  getDashboardUrl(): string {
-    return '/';
-  }
-
-  logout() {
-    this.router.navigate(['/']);
-  }
-
-  public tokenUser(): any {
-    return null;
-  }
-
-  public currentUser(): any {
-    return null;
-  }
-
-  public getAvatar(): string {
-    return 'default-profile1.png';
-  }
-
+  // Obtiene el rol del usuario
   public getRole(): string {
-    return '';
+    const user = this.currentUserValue;
+    return user?.rol || '';
+  }
+
+  // Verifica si es administrador
+  isAdmin(): boolean {
+    const role = this.getRole();
+    return role === 'SUPER_ADMIN' || role === 'ENCARGADO';
+  }
+
+  // Verifica si tiene un permiso específico (simplificado)
+  hasRoutePermission(route: string): boolean {
+    // Aquí puedes implementar lógica de permisos según tu backend
+    // Por ahora, retorna true si está logueado
+    return this.isLoggedIn();
+  }
+
+  // Obtiene el dashboard URL según el rol
+  getDashboardUrl(): string {
+    const role = this.getRole();
+    switch (role) {
+      case 'SUPER_ADMIN':
+      case 'ENCARGADO':
+        return '/';
+      default:
+        return '/';
+    }
+  }
+
+  // Obtiene el avatar del usuario
+  public getAvatar(): string {
+    const user = this.currentUserValue;
+    return user?.avatar || 'default-profile1.png';
+  }
+
+  // Obtiene el username del usuario
+  public getUsername(): string {
+    const user = this.currentUserValue;
+    return user?.username || '';
   }
 }
