@@ -1,10 +1,9 @@
 import { MenuItem } from './menu.model';
 
 export const MENU: MenuItem[] = [
-  // ========== INICIO ==========
+
   { nombreMenu: 'Inicio', ruta: '/', icono: 'las la-tachometer-alt' },
 
-  // ========== BIBLIOTECA ==========
   {
     nombreMenu: 'Biblioteca',
     icono: 'las la-book',
@@ -19,7 +18,7 @@ export const MENU: MenuItem[] = [
     ]
   },
 
-  // ========== PRÉSTAMOS ==========
+
   {
     nombreMenu: 'Préstamos',
     icono: 'las la-hand-holding-heart',
@@ -31,7 +30,6 @@ export const MENU: MenuItem[] = [
     ]
   },
 
-  // ========== REPORTES ==========
   {
     nombreMenu: 'Reportes',
     icono: 'las la-chart-bar',
@@ -44,7 +42,6 @@ export const MENU: MenuItem[] = [
     ]
   },
 
-  // ========== ADMINISTRACIÓN (opcional) ==========
   {
     nombreMenu: 'Administración',
     icono: 'las la-cogs',
