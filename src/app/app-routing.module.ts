@@ -3,12 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layouts/layout.component';
 //import { AuthGuard } from './core/guards/auth.guard';
 //import { NoAuthGuard } from './core/guards/no-auth.guard';
+import { AutoresComponent } from './pages/modules/autores/autores.component';
 import { DashboardComponent } from './pages/dashboards/dashboard/dashboard.component';
 import { ProfileComponent } from './pages/account/profile/profile.component';
 import { SettingsComponent } from './pages/account/settings/settings.component';
 /* MODULES */
 import { ActivitiesComponent } from './pages/modules/activities/activities.component';
-
+import { CategoriasComponent } from './pages/modules/categorias/categorias.component';
 
 const routes: Routes = 
 [
@@ -20,6 +21,8 @@ const routes: Routes =
     //  canActivateChild: [AuthGuard],
       children: [
           {path: '', component: DashboardComponent},
+        { path: 'biblioteca/autores', component: AutoresComponent },
+          { path: 'biblioteca/categorias', component: CategoriasComponent },
           {path: 'auth/profile', component: ProfileComponent,data: { requiredPermission: 'CAN_ACCESS' },},
           {path: 'auth/profile-setting', component: SettingsComponent,data: { requiredPermission: 'CAN_ACCESS' },},
       ]

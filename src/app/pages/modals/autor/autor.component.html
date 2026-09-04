@@ -1,0 +1,142 @@
+<div class="modal-header">
+    <h5 class="modal-title">
+        {{ accion === 'show' ? 'Ver Autor' : accion === 'edit' ? 'Editar Autor' : accion === 'delete' ? 'Eliminar Autor' : 'Agregar Autor' }}
+    </h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+</div>
+
+@if (accion === 'delete') {
+<div class="modal-body">
+    <p class="mb-0">
+        ¿Está seguro que desea eliminar al autor
+        <strong>{{ row.nombres }} {{ row.apellidos }}</strong>?
+    </p>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="closeModal()">Cancelar</button>
+    <button type="button" class="btn btn-danger" (click)="deleteMethod()">Eliminar</button>
+</div>
+} @else {
+<form [formGroup]="contentForm" (ngSubmit)="saveData()">
+    <div class="modal-body">
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label class="form-label">Nombres: <span class="text-danger">*</span></label>
+                <input
+                        type="text"
+                        class="form-control"
+                        formControlName="nombres"
+                        placeholder="Ingrese nombres"
+                        [readonly]="accion === 'show'"
+                        (input)="convertToUppercase('nombres')"
+                />
+
+                @if (submitted && form['nombres'].errors) {
+                <div class="text-danger mt-1">
+                    @if (form['nombres'].errors['required']) {
+                    <small>Los nombres son obligatorios</small>
+                    }
+                    @if (form['nombres'].errors['maxlength']) {
+                    <small>Máximo 75 caracteres</small>
+                    }
+                </div>
+                }
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Apellidos: <span class="text-danger">*</span></label>
+                <input
+                        type="text"
+                        class="form-control"
+                        formControlName="apellidos"
+                        placeholder="Ingrese apellidos"
+                        [readonly]="accion === 'show'"
+                        (input)="convertToUppercase('apellidos')"
+                />
+
+                @if (submitted && form['apellidos'].errors) {
+                <div class="text-danger mt-1">
+                    @if (form['apellidos'].errors['required']) {
+                    <small>Los apellidos son obligatorios</small>
+                    }
+                    @if (form['apellidos'].errors['maxlength']) {
+                    <small>Máximo 75 caracteres</small>
+                    }
+                </div>
+                }
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Nacionalidad: <span class="text-danger">*</span></label>
+                <input
+                        type="text"
+                        class="form-control"
+                        formControlName="nacionalidad"
+                        placeholder="Ingrese nacionalidad"
+                        [readonly]="accion === 'show'"
+                        (input)="convertToUppercase('nacionalidad')"
+                />
+
+                @if (submitted && form['nacionalidad'].errors) {
+                <div class="text-danger mt-1">
+                    @if (form['nacionalidad'].errors['required']) {
+                    <small>La nacionalidad es obligatoria</small>
+                    }
+                    @if (form['nacionalidad'].errors['maxlength']) {
+                    <small>Máximo 45 caracteres</small>
+                    }
+                </div>
+                }
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Fecha de nacimiento:</label>
+                <input
+                        type="date"
+                        class="form-control"
+                        formControlName="fechaNacimiento"
+                        [readonly]="accion === 'show'"
+                />
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label">Biografía:</label>
+                <textarea
+                        class="form-control"
+                        rows="4"
+                        formControlName="biografia"
+                        placeholder="Ingrese biografía"
+                        [readonly]="accion === 'show'"
+                ></textarea>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-check form-switch form-switch-lg">
+                    <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="activo"
+                            formControlName="activo"
+                            (change)="updateStatusText()"
+                            [disabled]="true"
+                    />
+                    <label class="form-check-label ms-2" for="activo">
+                        {{ statusText }}
+                    </label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="closeModal()">Cancelar</button>
+
+        @if (accion !== 'show') {
+        <button type="submit" class="btn btn-success">Guardar</button>
+        }
+    </div>
+</form>
+}
