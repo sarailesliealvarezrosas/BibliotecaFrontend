@@ -18,6 +18,47 @@
     <button type="button" class="btn btn-danger" (click)="deleteMethod()">Eliminar</button>
 </div>
 } @else {
+@if (accion === 'show') {
+<div class="modal-body">
+    <div class="detail-list">
+        <div class="detail-item">
+            <span class="detail-label">Nombres</span>
+            <span class="detail-value">{{ row.nombres || 'No especificado' }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="detail-label">Apellidos</span>
+            <span class="detail-value">{{ row.apellidos || 'No especificado' }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="detail-label">Nacionalidad</span>
+            <span class="detail-value">{{ row.nacionalidad || 'No especificado' }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="detail-label">Fecha de nacimiento</span>
+            <span class="detail-value">{{ row.fechaNacimiento || 'No especificado' }}</span>
+        </div>
+
+        <div class="detail-item detail-item-full">
+            <span class="detail-label">Biografía</span>
+            <span class="detail-value">{{ row.biografia || 'No especificado' }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="detail-label">Estado</span>
+            <span class="badge" [ngClass]="row.activo ? 'bg-success-subtle text-success' : 'bg-warning-subtle text-warning'">
+                {{ row.activo ? 'ACTIVO' : 'INACTIVO' }}
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="closeModal()">Cerrar</button>
+</div>
+} @else {
 <form [formGroup]="contentForm" (ngSubmit)="saveData()">
     <div class="modal-body">
         <div class="row g-3">
@@ -139,4 +180,5 @@
         }
     </div>
 </form>
+}
 }

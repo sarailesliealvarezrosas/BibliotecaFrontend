@@ -1,3 +1,31 @@
 textarea {
     resize: none;
 }
+
+.detail-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 24px;
+}
+
+.detail-item {
+    border-bottom: 1px solid #eef0f3;
+    padding-bottom: 10px;
+}
+
+.detail-item-full {
+    grid-column: 1 / -1;
+}
+
+.detail-label {
+    color: #6c757d;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.detail-value {
+    color: #212529;
+    font-weight: 500;
+    white-space: pre-wrap;
+}

@@ -18,42 +18,17 @@
   </div>
 
   <div class="modal-body" *ngIf="accion === 'show'">
-    <div class="card mb-3">
-      <div class="card-body">
-        <h6 class="fw-semibold mb-3 text-primary">
-          <i class="ri-price-tag-3-line me-2"></i>Información de la Categoría
-        </h6>
+    <div class="detail-list">
+      <div class="detail-item">
+        <span class="detail-label">Descripción</span>
+        <span class="detail-value">{{ row.descripcion || 'No especificado' }}</span>
+      </div>
 
-        <div class="row">
-          <div class="col-md-12 mb-3">
-            <div class="d-flex align-items-center">
-              <div class="flex-shrink-0 me-3">
-                <i class="ri-bookmark-line text-muted fs-5"></i>
-              </div>
-              <div class="flex-grow-1">
-                <h6 class="fw-semibold mb-0">Descripción</h6>
-                <p class="text-muted mb-0">{{ row.descripcion || 'No especificado' }}</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-12 mb-3">
-            <div class="d-flex align-items-center">
-              <div class="flex-shrink-0 me-3">
-                <i class="ri-toggle-line text-muted fs-5"></i>
-              </div>
-              <div class="flex-grow-1">
-                <h6 class="fw-semibold mb-0">Estado</h6>
-                <p class="mb-0">
-                  <span [ngClass]="{ 'text-success': row.activo, 'text-warning': !row.activo }">
-                    {{ row.activo ? 'ACTIVO' : 'INACTIVO' }}
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <div class="detail-item">
+        <span class="detail-label">Estado</span>
+        <span class="badge" [ngClass]="row.activo ? 'bg-success-subtle text-success' : 'bg-warning-subtle text-warning'">
+          {{ row.activo ? 'ACTIVO' : 'INACTIVO' }}
+        </span>
       </div>
     </div>
   </div>
