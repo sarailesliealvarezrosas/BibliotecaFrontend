@@ -5,6 +5,7 @@ import { NgbToastModule, NgbModule, NgbDropdownModule, NgbTooltipModule} from '@
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
 import { FlatpickrModule } from 'angularx-flatpickr';
+import { AutoresComponent } from './modules/autores/autores.component';
 import { SimplebarAngularModule } from 'simplebar-angular';
 // Load Icons
 import { defineElement } from '@lordicon/element';
@@ -19,7 +20,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { SharedModule } from "../shared/shared.module";
 import { ProfileComponent } from './account/profile/profile.component';
 import { SettingsComponent } from './account/settings/settings.component';
-
+import { CategoriasComponent } from './modules/categorias/categorias.component';
 import { ActivitiesComponent } from './modules/activities/activities.component';
 
 @NgModule({
@@ -30,6 +31,8 @@ import { ActivitiesComponent } from './modules/activities/activities.component';
 
 
     ActivitiesComponent,
+      AutoresComponent,
+    CategoriasComponent,
 
  ],
   imports: [

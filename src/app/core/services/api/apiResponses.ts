@@ -1,11 +1,11 @@
 import { throwError } from 'rxjs';
 
-export function handleResponse<T>(response: { status: string; payload: any }): T {
-  if (response.status === 'OK') {
-    return response.payload as T;
-  } else {
-    throw new Error(response.payload?.message || 'Respuesta inesperada del servidor');
+export function handleResponse<T>(response: any): T {
+  if (response.status === 'success' || response.status === 'OK') {
+    return response.data as T;
   }
+
+  throw new Error(response.message || 'Respuesta inesperada del servidor');
 }
 
 export function handleError(operation = 'operación') {
@@ -19,6 +19,7 @@ export function handleError(operation = 'operación') {
     } else if (typeof error === 'string') {
       message = error;
     }
+
     return throwError(() => new Error(message));
   };
 }
