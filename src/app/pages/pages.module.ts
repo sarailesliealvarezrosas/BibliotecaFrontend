@@ -5,23 +5,22 @@ import { NgbToastModule, NgbModule, NgbDropdownModule, NgbTooltipModule} from '@
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
 import { FlatpickrModule } from 'angularx-flatpickr';
-import { SimplebarAngularModule } from 'simplebar-angular';
-// Load Icons
+import { AutoresComponent } from './modules/autores/autores.component';
 import { defineElement } from '@lordicon/element';
 import lottie from 'lottie-web';
-// Calendar package
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-
-// Pages Routing
 import { SharedModule } from "../shared/shared.module";
+import { CategoriasComponent } from './modules/categorias/categorias.component';
 import { ActivitiesComponent } from './modules/activities/activities.component';
 
 @NgModule({
   declarations: [
     ActivitiesComponent,
+      AutoresComponent,
+    CategoriasComponent,
 
  ],
   imports: [

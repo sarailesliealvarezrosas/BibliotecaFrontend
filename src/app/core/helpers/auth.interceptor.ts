@@ -1,6 +1,7 @@
 import { HttpInterceptor, HttpHandler, HttpRequest, HttpEvent, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { GlobalComponent } from 'src/app/global-component';
 
 import { TokenStorageService } from '../services/token-storage.service';
 
@@ -23,6 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     return next.handle(authReq);
+
   }
 }
 
