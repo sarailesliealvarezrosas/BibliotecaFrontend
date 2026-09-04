@@ -45,7 +45,6 @@ export function createTranslateLoader(http: HttpClient): any {
         }),
         BrowserAnimationsModule,
         BrowserModule,  
-        // HttpClientModule,
         AppRoutingModule,
         LayoutsModule,
         PagesModule,
