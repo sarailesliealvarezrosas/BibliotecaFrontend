@@ -3,12 +3,8 @@
 <div class="content mb-3">
     <app-data-header
             [title]="title"
-            [headersImport]="headersImport"
             [newShow]="true"
-            [importShow]="false"
-            [exportShow]="true"
             (createEmitter)="openModal(undefined, '', 'lg')"
-            (exportEmitter)="csvFileExport()"
     ></app-data-header>
 
     <div class="card rounded-3">

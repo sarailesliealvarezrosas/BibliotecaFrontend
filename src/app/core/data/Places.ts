@@ -22,7 +22,7 @@ export const CityAcronym = [
     { id:7 , acronym:"SC", value:"SANTA CRUZ" },
     { id:8 , acronym:"BN", value:"BENI" },
     { id:9 , acronym:"CO", value:"COBIJA" },
-    // { "id":"9", "acronym": "PN",  "description": "PANDO" }
+
 ] 
 export const Countries = [
     { acronym: "AF", value: "Afganistán" },

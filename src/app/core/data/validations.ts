@@ -1,9 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 export class Validaciones {
   
-  // ==================== PARA FORMULARIOS ====================
-  
-  //Validador que verifica que el valor contenga solo números
+ 
   static numbersOnlyValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
@@ -14,7 +12,6 @@ export class Validaciones {
     };
   }
 
-  // evita espacios al inicio del texto
   static noLeadingSpaceValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
@@ -23,7 +20,7 @@ export class Validaciones {
     };
   }
 
-  // convierte el texto a mayusculas auto
+
   static uppercaseValidator(): ValidatorFn {//si
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
@@ -37,7 +34,6 @@ export class Validaciones {
     };
   }
 
-  //Validador para verificar datos unicos en una lista
   static validateUniqueData(listRows: any[], currentData?: any, field: string = 'numeroDocumento'): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {//si
       const value = control.value;
@@ -75,8 +71,6 @@ export class Validaciones {
     };
   }
 
-  // ==================== PARA LSO INPUTS ====================
-  // no permite entrada de cualquier caracter que no sea numero
   static restrictToNumbers(event: any): void {//si
     const input = event.target as HTMLInputElement;
     const initialValue = input.value || '';
@@ -88,7 +82,7 @@ export class Validaciones {
     }
   }
 
-  // convierte a mayusculas mientras el user escribe (bloquea las minusculas)
+
   static forceUppercase(event: any): void {
     const input = event.target as HTMLInputElement;
     const value = input.value;
@@ -103,7 +97,7 @@ export class Validaciones {
     }
   }
 
-  //Fuerza la primera letra mayuscula y el resto como el usuario quiera//si
+
   static forceFirstUppercase(event: any): void {
     const input = event.target as HTMLInputElement;
     let value = input.value;
@@ -119,7 +113,6 @@ export class Validaciones {
     }
   }
 
-  // Formateo completo para nombres propios (elimina caracteres no permitidos, normaliza espacios, capitaliza)
   static formatProperName(event: any): void {//si
     const input = event.target as HTMLInputElement;
     let value = input.value;

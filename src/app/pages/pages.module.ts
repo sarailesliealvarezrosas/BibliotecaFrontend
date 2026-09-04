@@ -6,30 +6,18 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { AutoresComponent } from './modules/autores/autores.component';
-import { SimplebarAngularModule } from 'simplebar-angular';
-// Load Icons
 import { defineElement } from '@lordicon/element';
 import lottie from 'lottie-web';
-// Calendar package
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-
-// Pages Routing
 import { SharedModule } from "../shared/shared.module";
-import { ProfileComponent } from './account/profile/profile.component';
-import { SettingsComponent } from './account/settings/settings.component';
 import { CategoriasComponent } from './modules/categorias/categorias.component';
 import { ActivitiesComponent } from './modules/activities/activities.component';
 
 @NgModule({
   declarations: [
-    ProfileComponent,
-    SettingsComponent,
-  //  PassResetComponent,
-
-
     ActivitiesComponent,
       AutoresComponent,
     CategoriasComponent,

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ngxCsv } from 'ngx-csv/ngx-csv';
 import { Categoria } from 'src/app/core/models/categoria.models';
 import { CategoriaService } from 'src/app/core/services/api/categorias.service';
 import { CategoriaModalComponent } from '../../modals/categoria/categoria.component';
@@ -25,7 +24,6 @@ export class CategoriasComponent {
   searchTerm = '';
   viewMode: 'table' | 'cards' = 'table';
 
-  headersImport = ['Descripción', 'Estado'];
 
   constructor(
     private modalService: NgbModal,
@@ -84,26 +82,6 @@ export class CategoriasComponent {
     });
   }
 
-  csvFileExport() {
-    const itemsToExport = this.selectedItems.length > 0 ? this.selectedItems : this.categoriasList;
-
-    const list = itemsToExport.map((item: Categoria) => ({
-      descripcion: item.descripcion || '',
-      activo: item.activo ? 'ACTIVO' : 'INACTIVO'
-    }));
-
-    new ngxCsv(list, this.title, {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalseparator: '.',
-      showLabels: true,
-      showTitle: true,
-      title: 'Lista de ' + this.title,
-      useBom: true,
-      noDownload: false,
-      headers: this.headersImport
-    });
-  }
 
   private getCategorias(): void {
     this.loading = true;

@@ -1,8 +1,8 @@
-<header id="page-topbar" data-scroll-header (window:scroll)="windowScroll()">
+<header id="page-topbar" data-scroll-header>
+
     <div class="layout-width">
         <div class="navbar-header">
             <div class="d-flex">
-                <!-- LOGO -->
                 <div class="navbar-brand-box horizontal-logo">
                     <a href="/" class="logo logo-dark">
                         <span class="logo-sm">
@@ -31,53 +31,9 @@
                     </span>
                 </button>
 
-                <!-- Menu Search-->
-                <form class="app-search d-none d-md-block">
-                    <div class="position-relative">
-                        <input type="text" class="form-control" placeholder="Buscar..." autocomplete="off" 
-                        id="search-options" value="" (keyup)="Search()">
-                        <span class="mdi mdi-magnify search-widget-icon"></span>
-                        <span class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none" 
-                        id="search-close-options" (click)="closeBtn()"></span>
-                    </div>
-                    <div class="dropdown-menu dropdown-menu-lg" id="search-dropdown">
-                        <ngx-simplebar style="max-height: 320px;">
-                            <!-- item-->
-                            <div class="dropdown-header">
-                                <h6 class="text-overflow text-muted mb-0 text-uppercase">Busquedas Recientes</h6>
-                            </div>
-
-                            <div class="dropdown-item bg-transparent text-wrap">
-                                <a href="/info/vehicles" class="btn btn-soft-secondary btn-sm rounded-pill me-1">
-                                    Vehículos <i class="mdi mdi-magnify ms-1"></i>
-                                </a>
-                                <a href="/management/technical-inspection" class="btn btn-soft-secondary btn-sm rounded-pill">
-                                    Inspecciones <i class="mdi mdi-magnify ms-1"></i>
-                                </a>
-                            </div>
-                            <!-- item-->
-                            <div class="dropdown-header mt-2">
-                                <h6 class="text-overflow text-muted mb-1 text-uppercase">Paginas</h6>
-                            </div>
-                            @for (menu of menuItems; track $index) {
-                                @if(menu.ruta && menu.accion==="VER"){
-                                    <a *ngIf="menu" [routerLink]="menu.ruta" class="dropdown-item notify-item">
-                                      <i class="ri-user-settings-line align-middle fs-18 text-muted me-2"></i>
-                                      <span>{{ menu.nombreMenu }}</span>
-                                    </a>
-                                }
-                            }
-                        </ngx-simplebar>
-
-                        <div class="text-center pt-3 pb-1">
-                            <a href="/pages/faqs" class="btn btn-primary btn-sm">Preguntas Frecuentes <i class="ri-arrow-right-line ms-1"></i></a>
-                        </div>
-                    </div>
-                </form>
             </div>
 
             <div class="d-flex align-items-center">
-
                 <div class="dropdown d-md-none topbar-head-dropdown header-item" ngbDropdown>
                     <button type="button" class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle" id="page-header-search-dropdown" 
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
@@ -95,84 +51,26 @@
                     </div>
                 </div>
 
- 
-
-                <div class="ms-1 header-item d-none d-sm-flex">
-                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" data-toggle="fullscreen" (click)="fullscreen()">
-                        <i class='bx bx-fullscreen fs-22'></i>
-                    </button>
-                </div>
-
-                <div class="ms-1 header-item d-none d-sm-flex">
-                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode">
-                        <i class='bx bx-moon fs-22' (click)="changeMode('dark')"></i>
-                        <i class='bx bx-sun fs-22' (click)="changeMode('light')"></i>
-                    </button>
-                </div>
-
-                <app-notices></app-notices>
 
                 <div class="dropdown ms-sm-3 header-item topbar-user" ngbDropdown>
                     <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
                         <span class="d-flex align-items-center">
                             <img class="rounded-circle header-profile-user" [src]="'assets/icons/users/'+avatar" alt="Header Avatar">
-                          
-
-                       
                             <span class="text-start ms-xl-2">
-                            <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
-                                Usuario
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
+                                    Usuario
+                                </span>
                             </span>
-                        </span>
-                       
-                       
                         </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
-                        <!-- item-->
-                         <h6 class="dropdown-header">Bienvenido!</h6>
-                     <!----   <h6 class="dropdown-header">Bienvenido {{userData.username ? userData.username : userData.userName}}!</h6>-->
-                        <a class="dropdown-item" routerLink="/auth/profile">
-                            <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> 
-                            <span class="align-middle">Perfil</span></a>
-                        <a class="dropdown-item" routerLink="/pages/faqs">
-                            <i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> 
-                            <span class="align-middle">Ayuda</span></a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" routerLink="/auth/profile-setting">
-                            <!-- <span class="badge bg-success-subtle text-success mt-1 float-end">New</span> -->
-                            <i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> 
-                            <span class="align-middle">Configuraciones</span></a>
-                        <!-- <a class="dropdown-item" href="javascript: void(0);" (click)="logout()"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Salir</span></a>
-                     -->
+                        <a class="dropdown-item text-danger" (click)="logout()" style="cursor: pointer;">
+                            <i class="mdi mdi-logout text-danger fs-16 align-middle me-1"></i> 
+                            <span class="align-middle">Logout</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </header>
-
-<!-- removeNotificationModal -->
-<ng-template #removenotification let-modal>
-    <!-- <div class="modal-dialog modal-dialog-centered"> -->
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="NotificationModalbtn-close" (click)="modal.dismiss('Cross click')"></button>
-        </div>
-        <div class="modal-body">
-            <div class="mt-2 text-center">
-                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
-                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                    <h4>Are you sure ?</h4>
-                    <p class="text-muted mx-4 mb-0">Are you sure you want to remove this Notification ?</p>
-                </div>
-            </div>
-            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal" (click)="modal.dismiss('Cross click')">Close</button>
-                <button type="button" class="btn w-sm btn-danger" id="delete-notification" (click)="notificationDelete()">Yes, Delete It!</button>
-            </div>
-        </div>
-
-    </div><!-- /.modal-content -->
-
-</ng-template>
