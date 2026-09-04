@@ -48,7 +48,7 @@
           @for(item of getSubMenu(menuItems); track $index){
             @if(item.isTitle){
               <li class="menu-title">
-                <span data-key="t-menu">{{ item.nombreMenu | translate }}</span>
+                <span data-key="t-menu">{{ item.nombreMenu }}</span>
               </li>
             }@else {
               <li class="nav-item">
@@ -58,9 +58,9 @@
                       [ngClass]="{'has-arrow': !item.badge, 'has-dropdown': item.badge}" data-bs-toggle="collapse" 
                       [attr.aria-expanded]="!item.isCollapsed" (click)="toggleItem(item)">
                       <i class="{{ item.icono }} icon nav-icon" class=""></i>
-                      <span class=""> {{ item.nombreMenu | translate }}</span>
+                      <span class=""> {{ item.nombreMenu }}</span>
                       @if(item.badge){<span class="badge badge-pill {{item.badge.variant}}">
-                      {{item.badge.text | translate}}</span>}
+                      {{item.badge.text}}</span>}
                     </a>
                     <div class="collapse menu-dropdown" #collapse="ngbCollapse" [(ngbCollapse)]="item.isCollapsed">
                       <ul class="nav nav-sm flex-column" aria-expanded="false">
@@ -70,9 +70,9 @@
                               <a class="nav-link" href="javascript:void(0);"
                                 [attr.data-parent]="subitem.permisoPadreDto" data-bs-toggle="collapse" 
                                 [attr.aria-expanded]="subitem.isCollapsed" (click)="toggleItem(subitem)">
-                                {{ subitem.nombreMenu | translate}}
+                                {{ subitem.nombreMenu }}
                                 @if(subitem.badge){
-                                  <span class="badge badge-pill {{subitem.badge.variant}}">{{subitem.badge.text | translate}}</span>
+                                  <span class="badge badge-pill {{subitem.badge.variant}}">{{subitem.badge.text}}</span>
                                 }
                               </a>
                               <div class="collapse menu-dropdown sub-menu" #collapse="ngbCollapse" [(ngbCollapse)]="subitem.isCollapsed">
@@ -83,9 +83,9 @@
                                         <a class="nav-link" href="javascript:void(0);" 
                                           [attr.data-parent]="subSubitem.permisoPadreDto" data-bs-toggle="collapse" 
                                           [attr.aria-expanded]="!subSubitem.isCollapsed" (click)="toggleItem(subSubitem)">
-                                          {{ subSubitem.nombreMenu | translate}}
+                                          {{ subSubitem.nombreMenu }}
                                           @if(subSubitem.badge){<span class="badge badge-pill {{subSubitem.badge.variant}}">
-                                            {{subSubitem.badge.text | translate}}</span>}
+                                            {{subSubitem.badge.text}}</span>}
                                         </a>
                                         <div class="collapse menu-dropdown extra-sub-menu" #collapse="ngbCollapse" [(ngbCollapse)]="subSubitem.isCollapsed">
                                           <ul class="nav nav-sm flex-column" aria-expanded="false">
@@ -94,7 +94,7 @@
                                                 <a [attr.data-parent]="subSubitem1.permisoPadreDto" 
                                                   [routerLink]="subSubitem1.ruta" class="nav-link" 
                                                   (click)="updateActive($event)">
-                                                  {{ subSubitem1.nombreMenu | translate }}
+                                                  {{ subSubitem1.nombreMenu }}
                                                 </a>
                                               </li>
                                             }
@@ -103,9 +103,9 @@
                                       }@else {
                                         <a [routerLink]="subSubitem.ruta" class="nav-link" 
                                           [attr.data-parent]="subSubitem.permisoPadreDto" (click)="updateActive($event)">
-                                          {{ subSubitem.nombreMenu | translate}}
+                                          {{ subSubitem.nombreMenu }}
                                           @if(subSubitem.badge){<span class="badge badge-pill {{subSubitem.badge.variant}}">
-                                            {{subSubitem.badge.text | translate}}</span>}
+                                            {{subSubitem.badge.text}}</span>}
                                         </a>
                                       }
                                     </li>
@@ -116,9 +116,9 @@
                               <a [routerLink]="subitem.ruta" class="nav-link" 
                                 [attr.data-parent]="subitem.permisoPadreDto" (click)="updateActive($event)">
                                 <i class="{{ subitem.icono }} icon nav-icon" class=""></i>
-                                {{ subitem.nombreMenu | translate}}
+                                {{ subitem.nombreMenu }}
                                 @if(subitem.badge){<span class="badge badge-pill {{subitem.badge.variant}}">
-                                  {{subitem.badge.text | translate}}</span>}
+                                  {{subitem.badge.text}}</span>}
                               </a>
                             }
                           </li>
@@ -128,9 +128,9 @@
                   }@else {
                     <a [routerLink]="item.ruta" routerLinkActive="active" class="side-nav-link-ref nav-link menu-link">
                       @if(item.icono){<i class="{{ item.icono }} icon nav-icon" class=""></i>}
-                      <span class=""> {{ item.nombreMenu | translate }} </span>
+                      <span class=""> {{ item.nombreMenu }} </span>
                       @if(item.badge){<span class="badge {{item.badge.variant}} float-end">
-                        {{item.badge.text | translate}}</span>}
+                        {{item.badge.text}}</span>}
                     </a>
                   }
                 }
