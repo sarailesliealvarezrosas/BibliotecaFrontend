@@ -7,8 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'ngx-countup';
-
-import { TermsConditionsComponent } from './extraspages/terms-conditions/terms-conditions.component';
 import { PrivacyPolicyComponent } from './extraspages/privacy-policy/privacy-policy.component';
 
 import { ScrollspyDirective } from './scrollspy.directive';
@@ -44,8 +42,6 @@ import { LeafletComponent } from './map/leaflet.component';
     NgbTooltipModule,
     FlatpickrModule,
     NgSelectModule,
-
-    TermsConditionsComponent,
     PrivacyPolicyComponent,
   ],
   providers: [ DatePipe ],
@@ -58,8 +54,6 @@ import { LeafletComponent } from './map/leaflet.component';
     DataTableComponent,
     DataCardsComponent,
     LeafletComponent,
-
-    TermsConditionsComponent, 
     PrivacyPolicyComponent,
   ]
 })
